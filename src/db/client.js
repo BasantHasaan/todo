@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 
-import { offsetLimitPagination } from "@apollo/client/utilities";
 
 dotenv.config();
 

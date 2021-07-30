@@ -2,8 +2,6 @@ import { gql } from "@apollo/client";
 import { client } from "./client";
 
 class GraphCMSContent {
-  constructor(props) {
-  }
    fetchTodo(id) {
     const QUERY = gql`
     query {
