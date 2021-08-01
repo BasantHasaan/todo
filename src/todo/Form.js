@@ -4,7 +4,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import GraphCMSContent from "../db/graphcms";
 import { useHistory } from "react-router-dom";
+// import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
+// import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
+// import DateTimePicker from '@material-ui/lab/DateTimePicker';
+// import Stack from '@material-ui/core/Stack';
 
+
+   
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,17 +58,25 @@ const Form = () => {
       <TextField
         label="Date"
         type="datetime-local"
+   
+        InputLabelProps={{
+          shrink: true,
+        }}
+        // min={new Date()}
+        inputProps={{
+          min: new Date().toISOString().slice(0, -8),
+          // max: "2020-08-20"
+        }}  
         onChange={(e) =>
           setData({
             ...data,
             dueDate: new Date(e.currentTarget.value).toISOString(),
           })
-        }
-        InputLabelProps={{
-          shrink: true,
-        }}
-        variant="filled"
+        } 
+             variant="filled"
       />
+        
+
       <TextField
         onChange={(e) =>
           setData({
