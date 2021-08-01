@@ -32,34 +32,41 @@ const TodosList = ({ data }) => {
   const classes = useStyles();
   const [todos, setTodos] = React.useState(data.items);
   const Client = new GraphCMSContent();
-  const completeTodo = async({id,isCompleted}) => {
-    const {data} = await Client.updateTodo(id,!isCompleted);
-    if (data !== false) alert("New Todo Created Successfully!");
-    else alert("An error occurred!");
-    const newTodos = todos.filter(todo=>todo.id !== id )
-    setTodos([...newTodos,data.updateItem]);
+  const [error, setError] = React.useState('');
 
+  const completeTodo = async({id,isCompleted}) => {
+    try {
+      const {data} = await Client.updateTodo(id,!isCompleted);
+      if (!data) {
+        throw new Error(`HTTP error! ${data}`);
+      }
+      const newTodos = todos.filter(todo=>todo.id !== id )
+      setTodos([...newTodos,data.updateItem])
+  
+    } catch(error) { setError(error.message) }
   };
+  if (error) return <h1>{error}</h1>;
+
   return (
     <>
     {todos.map((item) => (
     <Card className={classes.root} variant="outlined" key={item.id}>
-    <CardContent>
-      <Typography variant="h5" component="h2" style={{ textDecoration: item.isCompleted ? "line-through" : "" }}>
-      <Checkbox
-        checked={item.isCompleted}
-        onChange={()=>completeTodo(item)}
-        inputProps={{ 'aria-label': 'primary checkbox' }}
-      />
-      {item.title}
-      </Typography>
-      <Link to={`/todos/${item.id}`}>
-      <Button variant="outlined" color="primary">
-        View Details
-      </Button>
-      </Link>
-    </CardContent>
-  </Card>
+      <CardContent>
+        <Typography variant="h5" component="h2" style={{ textDecoration: item.isCompleted ? "line-through" : "" }}>
+        <Checkbox
+          checked={item.isCompleted}
+          onChange={()=>completeTodo(item)}
+          inputProps={{ 'aria-label': 'primary checkbox' }}
+        />
+        {item.title}
+        </Typography>
+        <Link to={`/todos/${item.id}`}>
+        <Button variant="outlined" color="primary">
+          View Details
+        </Button>
+        </Link>
+      </CardContent>
+    </Card>
     ))}
     </>
   );

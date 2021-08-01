@@ -6,7 +6,7 @@ import React  from 'react';
 
 const Home = (res) => {
   const Client = new GraphCMSContent();
-  const { error, data, loading } = useQuery(Client.fetchTodos(), {
+  const { error, data, loading, fetchMore } = useQuery(Client.fetchTodos(), {
     fetchPolicy: "cache-and-network"
   });
 
@@ -16,6 +16,19 @@ const Home = (res) => {
   return (
     <div className="home">
       { data && <TodosList data={data} />}
+      <input
+        type="button"
+        value="load more"
+        onClick={() => fetchMore({
+          variables: {
+            first: 10,
+            last:2,
+            // afterCursor: data.search.pageInfo.endCursor,
+          }
+          // No need for an updateQuery function, since the
+          // field policy handles all Query.search updates.
+        })}
+      />
     </div>
   );
 }

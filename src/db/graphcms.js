@@ -19,8 +19,8 @@ class GraphCMSContent {
 
   fetchTodos() {
     const QUERY = gql`
-      query  {
-        items{
+      query($first:Int, $skip:Int) {
+        items(first:$first, skip:$skip) {
           id
           title
           details
@@ -73,7 +73,7 @@ class GraphCMSContent {
       const data = await client.mutate({ mutation: QUERY });
       return data;
     } catch (error) {
-      console.log("Error at createTodo:>>", error);
+      console.log("Error at updateTodo:>>", error);
       return false;
     }
   }
